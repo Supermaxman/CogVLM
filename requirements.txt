@@ -1,7 +1,7 @@
 SwissArmyTransformer>=0.4.8
 transformers>=4.33.1
-xformers>=0.0.22
-torch>1.10.0
+xformers==0.0.22
+torch==2.1.0+cu121
 torchvision
 spacy>=3.6.0
 pillow>=10.0.1
