@@ -197,7 +197,7 @@ def main(args):
         print(gr.__version__)
 
     demo.queue(concurrency_count=10)
-    demo.launch()
+    demo.launch(share=True)
 
 
 if __name__ == '__main__':
