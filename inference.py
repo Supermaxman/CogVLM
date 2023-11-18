@@ -38,9 +38,14 @@ def main():
     parser.add_argument("--local_tokenizer", type=str, default="lmsys/vicuna-7b-v1.5", help='tokenizer path')
     parser.add_argument("--fp16", action="store_true")
     parser.add_argument("--bf16", action="store_true")
-    parser.add_argument("--input_file", type=str, required=True, help='input path for .jsonl file')
-    parser.add_argument("--output_file", type=str, required=True, help='output path for .jsonl file')
+    parser.add_argument("--input_path", type=str, required=True, help='input path for .jsonl file')
+    parser.add_argument("--output_path", type=str, required=True, help='output path for .jsonl file')
+    parser.add_argument("--images_path", type=str, required=True, help='input path for images')
+
     parser.add_argument("--prompt", type=str, default='Describe this image in great detail.', help='Prompt to use along with image')
+    
+    parser.add_argument("--english", action='store_true', help='only output English')
+
     args = parser.parse_args()
     rank = int(os.environ.get('RANK', 0))
     world_size = int(os.environ.get('WORLD_SIZE', 1))
@@ -92,7 +97,7 @@ def main():
                 assert query is not None
                 try:
                     response, history, cache_image = chat(
-                        image_path, 
+                        os.path.join(args.images_path, image_path), 
                         model, 
                         text_processor_infer,
                         image_processor,
