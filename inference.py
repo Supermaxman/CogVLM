@@ -113,10 +113,15 @@ def main():
                         )
                 except Exception as e:
                     print(e)
-                    break
+                    continue
                 if rank == 0:
                     print("Model: " + response)
-                    f.write(json.dumps({"response": response}) + "\n")
+                    f.write(json.dumps(
+                      {
+                        "id": ex["id"],
+                        "response": response
+                      }
+                      ) + "\n")
                     if tokenizer.signal_type == "grounding":
                         print("Grounding result is saved at ./output.png")
                     
