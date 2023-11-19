@@ -78,11 +78,16 @@ def main():
 
     text_processor_infer = llama2_text_processor_inference(tokenizer, args.max_length, model.image_length)
 
-    print('Welcome to CogVLM-CLI. Enter an image URL or local file path to load an image. Continue inputting text to engage in a conversation. Type "clear" to start over, or "stop" to end the program.')
     with torch.no_grad():
         data = list(read_jsonl(args.input_path))
-        with open(args.output_path, 'w') as f:
+        seen_ids = set()
+        if os.path.exists(args.output_path):
+            for p in read_jsonl(args.output_path):
+                seen_ids.add(p['id'])
+        with open(args.output_path, 'a') as f:
             for ex in tqdm(data):
+                if ex['id'] in seen_ids:
+                    continue
                 history = None
                 cache_image = None
                 if world_size > 1:
