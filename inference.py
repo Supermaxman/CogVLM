@@ -122,7 +122,6 @@ def main():
                       }
                       ) + "\n")
                     f.flush()
-                    
 
 
 if __name__ == "__main__":
